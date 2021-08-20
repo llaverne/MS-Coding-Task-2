@@ -29,8 +29,8 @@ namespace MS_Coding_Task_2
             Console.WriteLine("Lawrence LaVerne MS coding task 2");
 
             // "sum up only the positive numbers, or only the even numbers":
-            sumOfInputFileRows = CalculateSum(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt", "even");
-            //sumOfInputFileRows = CalculateSum("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D", "positive");
+            //sumOfInputFileRows = CalculateSum(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt", "even");
+            sumOfInputFileRows = CalculateSum("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D", "positive");
 
             Console.WriteLine("Result is " + sumOfInputFileRows);
         }
@@ -79,35 +79,36 @@ namespace MS_Coding_Task_2
             if (fullPathToInputFile.StartsWith("http", StringComparison.CurrentCultureIgnoreCase)) // ignore case
             {
                 // Read from a URI:
+                Console.WriteLine("Reading URI...");
                 string inputURLRowsRead = ReadStringFromUrl(fullPathToInputFile);
-                inputFileRowsRead = inputURLRowsRead.Split(" ");
-
+                inputFileRowsRead = inputURLRowsRead.Split("\r\n");
+                Console.WriteLine("Received data successfully.");
             }
             else
             {
                 // Read from a file:
+                Console.WriteLine("Reading from file...");
                 inputFileRowsRead = File.ReadAllLines(fullPathToInputFile);
-                
+                Console.WriteLine("Read file successfully.");
             }
 
             return inputFileRowsRead;
         }
 
-        private async void SaveOutput(string fullPathToOutputFile, int sumOfInputFileRows)
+        private async void SaveStringToFile(string fullPathToOutputFile, string sumOfInputFileRows)
         {
             // Compose output message and count:
-            string OutputMessage = "The total count is: " + sumOfInputFileRows;
-            await File.WriteAllTextAsync(fullPathToOutputFile, OutputMessage);
-
-            Console.WriteLine(OutputMessage + ". Saved the result to " + fullPathToOutputFile);
+            await File.WriteAllTextAsync(fullPathToOutputFile, sumOfInputFileRows.ToString());
+            Console.WriteLine("Successfully saved result to " + fullPathToOutputFile);
         }
 
-        void SaveStringToUrl(string url, string data)
+        void SaveStringToUrl(string urlDestination, string sumOfInputFileRows)
         {
             using (var webClient = new System.Net.WebClient())
             {
                 webClient.Headers.Add("x-ms-blob-type", "BlockBlob");
-                webClient.UploadString(url, "PUT", data);
+                webClient.UploadString(urlDestination, "PUT", sumOfInputFileRows);
+                Console.WriteLine("Successfully saved result to " + urlDestination);
             }
         }
 
