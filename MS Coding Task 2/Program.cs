@@ -22,23 +22,17 @@ namespace MS_Coding_Task_2
         static void Main(string[] args)
         {
             Console.WriteLine("Lawrence LaVerne MS coding task 2");
-            CalculateSum calculateSum = new();
 
-            // "sum up only the positive numbers, or only the even numbers":
-            calculateSum.SumInputRows(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt", null);
-            //calculateSum.SumInputRows(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt", "even");
-            //calculateSum.SumInputRows(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt", "positive");
-
-            //calculateSum.SumInputRows("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D", null);
-            //calculateSum.SumInputRows("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D", "even");
-            //calculateSum.SumInputRows("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D", "even");
+            // Example execution using lambda::
+            //CalculateSum calculateSum = new();
+            //calculateSum.SumInputRows(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt", (num => num > 0));
         }
     }
 
     public class CalculateSum
     {
 
-        public int SumInputRows(string fullPathToInputFile, string fullPathToOutputFile, string sumFilter)
+        public int SumInputRows(string fullPathToInputFile, string fullPathToOutputFile, Func<int, bool> sumFilter)
         {
             int sumOfInputFileRows = 0;
             string[] inputFileRows;
@@ -48,27 +42,11 @@ namespace MS_Coding_Task_2
             {
                 int thisInputFileRowToInt;
                 thisInputFileRowToInt = int.Parse(thisInputFileRow);
-
-                switch (sumFilter)
+                
+                // Sum, applying filter criterion (lambda expression):
+                if (sumFilter(thisInputFileRowToInt))
                 {
-                    case "even":
-                        if (thisInputFileRowToInt % 2 == 0) // no remainder, so it's even
-                        {
-                            sumOfInputFileRows += int.Parse(thisInputFileRow);
-                        }
-                        break;
-
-                    case "positive":
-                        if (thisInputFileRowToInt > 0) // greater than zero, so it's positive
-                        {
-                            sumOfInputFileRows += int.Parse(thisInputFileRow);
-                        }
-                        break;
-
-                    default:
-                        sumOfInputFileRows += int.Parse(thisInputFileRow); // no filter, so add 'em all!
-                        sumFilter = "all";
-                        break;
+                    sumOfInputFileRows += thisInputFileRowToInt;
                 }
             }
 
