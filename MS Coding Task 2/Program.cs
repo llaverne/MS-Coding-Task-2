@@ -29,10 +29,13 @@ namespace MS_Coding_Task_2
             Console.WriteLine("Lawrence LaVerne MS coding task 2");
 
             // "sum up only the positive numbers, or only the even numbers":
+            //sumOfInputFileRows = CalculateSum(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt", null);
             //sumOfInputFileRows = CalculateSum(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt", "even");
-            sumOfInputFileRows = CalculateSum("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D", "even");
-
-            // Save result:
+            //sumOfInputFileRows = CalculateSum(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt", "positive");
+            
+            sumOfInputFileRows = CalculateSum("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D", null);
+            //sumOfInputFileRows = CalculateSum("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D", "even");
+            //sumOfInputFileRows = CalculateSum("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D", "even");
 
         }
 
@@ -72,6 +75,10 @@ namespace MS_Coding_Task_2
             }
 
             Console.WriteLine("Sum of "+ sumFilter + " numbers is " + sumOfInputFileRows );
+
+            // Save result:
+            SaveResult(fullPathToOutputFile, sumOfInputFileRows.ToString());
+
             return sumOfInputFileRows;
         }
 
@@ -98,17 +105,34 @@ namespace MS_Coding_Task_2
             return inputFileRowsRead;
         }
 
-        private async void SaveStringToFile(string fullPathToOutputFile, string sumOfInputFileRows)
+        static void SaveResult(string fullPathToOutputFile, string sumOfInputFileRows)
         {
+            if (fullPathToOutputFile.StartsWith("http", StringComparison.CurrentCultureIgnoreCase)) // ignore case
+            {
+                // Save to a URI:
+                SaveStringToUri(fullPathToOutputFile, sumOfInputFileRows);
+            }
+            else
+            {
+                // Save to a file:
+                SaveStringToFile(fullPathToOutputFile, sumOfInputFileRows);
+            }
+        }
+
+        static private async void SaveStringToFile(string fullPathToOutputFile, string sumOfInputFileRows)
+        {
+            Console.WriteLine("Saving to file...");
+
             // Compose output message and count:
             await File.WriteAllTextAsync(fullPathToOutputFile, sumOfInputFileRows.ToString());
             Console.WriteLine("Successfully saved result to " + fullPathToOutputFile);
         }
 
-        void SaveStringToUrl(string urlDestination, string sumOfInputFileRows)
+        static void SaveStringToUri(string urlDestination, string sumOfInputFileRows)
         {
             using (var webClient = new System.Net.WebClient())
             {
+                Console.WriteLine("Saving to URI...");
                 webClient.Headers.Add("x-ms-blob-type", "BlockBlob");
                 webClient.UploadString(urlDestination, "PUT", sumOfInputFileRows);
                 Console.WriteLine("Successfully saved result to " + urlDestination);
