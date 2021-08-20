@@ -38,7 +38,7 @@ namespace MS_Coding_Task_2
     public class CalculateSum
     {
 
-        public void SumInputRows(string fullPathToInputFile, string fullPathToOutputFile, string sumFilter)
+        public int SumInputRows(string fullPathToInputFile, string fullPathToOutputFile, string sumFilter)
         {
             int sumOfInputFileRows = 0;
             string[] inputFileRows;
@@ -76,6 +76,8 @@ namespace MS_Coding_Task_2
 
             // Save result:
             SaveResult(fullPathToOutputFile, sumOfInputFileRows.ToString());
+
+            return sumOfInputFileRows;
         }
 
         static string[] ReadInputFile(string fullPathToInputFile)
