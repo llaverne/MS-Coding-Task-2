@@ -21,29 +21,27 @@ namespace MS_Coding_Task_2
     {
         static void Main(string[] args)
         {
-            // CalculateSum(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt");
-            // CalculateSum("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D");
-
-            int sumOfInputFileRows;
-
             Console.WriteLine("Lawrence LaVerne MS coding task 2");
+            CalculateSum calculateSum = new();
 
             // "sum up only the positive numbers, or only the even numbers":
-            //sumOfInputFileRows = CalculateSum(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt", null);
-            //sumOfInputFileRows = CalculateSum(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt", "even");
-            //sumOfInputFileRows = CalculateSum(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt", "positive");
-            
-            sumOfInputFileRows = CalculateSum("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D", null);
-            //sumOfInputFileRows = CalculateSum("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D", "even");
-            //sumOfInputFileRows = CalculateSum("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D", "even");
+            calculateSum.SumInputRows(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt", null);
+            //calculateSum.SumInputRows(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt", "even");
+            //calculateSum.SumInputRows(@"D:\InterviewTasks\input.txt", @"D:\InterviewTasks\result.txt", "positive");
 
+            //calculateSum.SumInputRows("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D", null);
+            //calculateSum.SumInputRows("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D", "even");
+            //calculateSum.SumInputRows("https://interviewsupport.blob.core.windows.net/inputs/simple.txt", "https://interviewsupport.blob.core.windows.net/outputs/result.txt?sp=racwdl&st=2021-08-18T20:47:46Z&se=2021-09-02T04:47:46Z&sv=2020-08-04&sr=c&sig=R9T1YGyB8c0hz9iwNpSk7iZB8sJgU6yV8kgc4b0tlq8%3D", "even");
         }
+    }
 
-        static int CalculateSum(string fullPathToInputFile, string fullPathToOutputFile, string sumFilter)
+    public class CalculateSum
+    {
+
+        public void SumInputRows(string fullPathToInputFile, string fullPathToOutputFile, string sumFilter)
         {
             int sumOfInputFileRows = 0;
             string[] inputFileRows;
-
             inputFileRows = ReadInputFile(fullPathToInputFile);
 
             foreach (string thisInputFileRow in inputFileRows)
@@ -74,12 +72,10 @@ namespace MS_Coding_Task_2
                 }
             }
 
-            Console.WriteLine("Sum of "+ sumFilter + " numbers is " + sumOfInputFileRows );
+            Console.WriteLine("Sum of " + sumFilter + " numbers is " + sumOfInputFileRows);
 
             // Save result:
             SaveResult(fullPathToOutputFile, sumOfInputFileRows.ToString());
-
-            return sumOfInputFileRows;
         }
 
         static string[] ReadInputFile(string fullPathToInputFile)
@@ -119,7 +115,7 @@ namespace MS_Coding_Task_2
             }
         }
 
-        static private async void SaveStringToFile(string fullPathToOutputFile, string sumOfInputFileRows)
+        static async void SaveStringToFile(string fullPathToOutputFile, string sumOfInputFileRows)
         {
             Console.WriteLine("Saving to file...");
 
@@ -147,4 +143,5 @@ namespace MS_Coding_Task_2
             }
         }
     }
+
 }
